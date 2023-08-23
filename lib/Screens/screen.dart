@@ -42,9 +42,7 @@ class _ScreenState extends State<Screen> {
             n1 = calculate(bracket);
           }
         }
-      } else if (int.tryParse(bracketString[i]) != null) {
-        n1 = n1 + bracketString[i];
-      } else if (bracketString[i] == '.') {
+      } else if (bracketString[i] != '%' && (int.tryParse(bracketString[i]) != null || bracketString[i] == '.')) {
         n1 = n1 + bracketString[i];
       } else if (bracketString[i] == '(') {
         stack.add("(");
@@ -61,9 +59,13 @@ class _ScreenState extends State<Screen> {
         } else if (op == '/') {
           num1 = div(n1, num1);
           n1 = '';
+        } else if (op == '%') {
+          num1 = double.parse(n1)/100;
         } else {
-          num1 = double.parse(n1);
-          n1 = '';
+          if(bracketString[i]!='%'){
+            num1 = double.parse(n1);
+            n1 = '';
+          }
         }
         op = bracketString[i];
       }
@@ -76,6 +78,8 @@ class _ScreenState extends State<Screen> {
       num1 = multi(n1, num1);
     } else if (op == '/') {
       num1 = div(n1, num1);
+    } else if (op == '%') {
+      num1 = double.parse(n1)/100;
     } else {
       num1 = double.parse(n1);
     }
